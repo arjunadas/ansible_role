@@ -4,7 +4,7 @@
       block:
         - name: Git clone   # clone code
           ansible.builtin.git:
-            repo: 'https://github.com/arjunadas/ansible_role.git'
+            repo: 'https://github.com/arjunadas/ansible_target.git'
             dest: /tmp/django
             clone: yes
             update: yes

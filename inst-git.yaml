@@ -51,6 +51,14 @@
         - name: Run script = create Dockerfile # это единственный шелл, он нужен для создания web странички
           shell: /bin/bash /tmp/django/script.sh
           tags: 
-            - run_script             
+            - run_script   
+
+        - name: Create a network 
+          community.docker.docker_network:
+            name: mynet109
+            ipam_config:
+              - subnet: 172.109.0.0/16         
+          tags:
+            - create_net            
             
       become: yes

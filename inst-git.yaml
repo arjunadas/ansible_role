@@ -37,6 +37,7 @@
             - ca-certificates
             - software-properties-common
             - docker-ce
+            - python3-docker
             - nginx
           tags:
             - install

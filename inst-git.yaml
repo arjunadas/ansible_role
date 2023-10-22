@@ -36,6 +36,7 @@
             - ca-certificates
             - software-properties-common
             - docker-ce
+            - nginx
           tags:
             - install
             

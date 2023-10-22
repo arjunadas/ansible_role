@@ -10,6 +10,18 @@
             update: yes
           tags:
             - git_clone
+            
+        - name: set +x script
+          file: 
+            path: /tmp/django/script.sh
+            mode: 0755
+          tags: 
+            - change_permissions            
+
+        - name: Run script = create Dockerfile # это единственный шелл, он нужен для создания web странички
+          shell: /bin/bash /tmp/django/script.sh
+          tags: 
+            - run_script 
 
         - name: Add an Apt signing key, uses whichever key is at the URL
           apt_key:

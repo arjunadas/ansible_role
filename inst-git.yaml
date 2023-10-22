@@ -6,8 +6,10 @@
           ansible.builtin.git:
             repo: 'https://github.com/arjunadas/ansible_target.git'
             dest: /tmp/django
-            clone: yes
-            update: yes
+          register: repo_clone
+          failed_when:
+            - repo_clone.failed
+            - not 'Local modifications exist in repository' in repo_clone.msg          
           tags:
             - git_clone
             

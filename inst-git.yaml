@@ -67,7 +67,8 @@
             name: 1st
             image: "myproject2"
             networks:
-              - name: "mynet109"   
+              - name: "mynet109"
+                ipv4_address: "172.109.0.2"
           tags:
            - create_1st    
             

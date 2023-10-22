@@ -62,13 +62,13 @@
           tags:
             - create_net
             
-         - name: Create 1st container
-           community.docker.docker_container:
-             name: 1st
-             image: "myproject2"
-             networks:
-               - name: "mynet109"   
-           tags:
-            - create_1st    
+        - name: Create 1st container
+          community.docker.docker_container:
+            name: 1st
+            image: "myproject2"
+            networks:
+              - name: "mynet109"   
+          tags:
+           - create_1st    
             
       become: yes

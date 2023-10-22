@@ -1,4 +1,6 @@
 - hosts: all
+  vars:
+    docker_network: mynet109
   tasks:
     - name: Main block
       block:
@@ -71,24 +73,20 @@
                 ipv4_address: "172.109.0.2"
           tags:
            - create_1st    
-  vars:
-    docker_network: mynet109
-  collections:
-    - community.docker
-  tasks:
-    - name: "get network info"
-      docker_network_info:
-        name: "{{ docker_network }}"
-      register: net_info
 
-    - name: "get container info"
-      docker_container_info:
-        name: "{{ item  }}"
-      register: container_info
-      loop: "{{ net_info.network.Containers.keys() }}"
+        - name: "get network info"
+          docker_network_info:
+            name: "{{ docker_network }}"
+          register: net_info
 
-    - debug:
-        msg: "{{ item }}"
-      loop: "{{ container_info.results|json_query('[].container.Name') }}" 
+        - name: "get container info"
+          docker_container_info:
+            name: "{{ item  }}"
+          register: container_info
+          loop: "{{ net_info.network.Containers.keys() }}"
+
+        - debug:
+            msg: "{{ item }}"
+          loop: "{{ container_info.results|json_query('[].container.Name') }}" 
       
       become: yes

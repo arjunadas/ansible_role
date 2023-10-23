@@ -1,9 +1,8 @@
 [servers]
-192.168.0.22
+185.98.82.78
 
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3
 ansible_connection=ssh
-ansible_user=admin1
-ansible_ssh_pass=123
-ansible_sudo_pass=123
+ansible_user=admin2
+

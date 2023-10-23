@@ -1,0 +1,97 @@
+- hosts: all
+  ignore_errors: yes
+  become: yes
+  tasks:
+  - block:
+      - name: Git clone   # clone code
+        ansible.builtin.git:
+          repo: 'https://github.com/arjunadas/ansible_target.git'
+          dest: /tmp/django
+          clone: yes
+          update: yes
+          force: yes
+        tags:
+          - git_clone
+
+      - name: Get info on 1st container
+        community.docker.docker_container_info:
+          name: "1st"
+        register: result1
+
+      - name: Does container exist?
+        debug:
+          msg: "The container {{ 'exists' if result1.exists else 'does not exist' }}"
+
+      - name: Print information about container
+        debug:
+          var: result1.container.NetworkSettings.IPAddress
+        when: result1.exists and result1.container.NetworkSettings.IPAddress == "172.17.0.2"
+
+      - name: Create 2st container with ip = 172.17.0.2
+        community.docker.docker_container:
+          name: "2st"
+          image: "permalexeyy/myproject5"
+        when: result1.exists and result1.container.NetworkSettings.IPAddress == "172.17.0.2"
+
+      - name: change nginx conf
+        ansible.builtin.copy:
+          src: /tmp/django/default3
+          dest: /etc/nginx/sites-available/default
+          remote_src: yes
+        when: result1.exists and result1.container.NetworkSettings.IPAddress == "172.17.0.2"
+
+      - name: Restart service nginx
+        ansible.builtin.service:
+          name: nginx
+          state: restarted
+        when: result1.exists and result1.container.NetworkSettings.IPAddress == "172.17.0.2"
+
+      - name: Delete 1st container
+        community.docker.docker_container:
+          name: "1st"
+          state: absent
+      - meta: end_play
+        when: result1.exists and result1.container.NetworkSettings.IPAddress == "172.17.0.2"
+################
+################
+      - name: Get info on 2nd container
+        community.docker.docker_container_info:
+          name: "2st"
+        register: result2
+
+      - name: Does container exist?
+        debug:
+          msg: "The container {{ 'exists' if result2.exists else 'does not exist' }}"
+
+      - name: Print information about container
+        debug:
+          var: result2.container.NetworkSettings.IPAddress
+        when: result2.exists and result2.container.NetworkSettings.IPAddress == "172.17.0.3"
+
+      - name: Create 1st container with ip 172.17.0.2
+        community.docker.docker_container:
+          name: "1st"
+          image: "permalexeyy/myproject5"
+        when: result2.exists and result2.container.NetworkSettings.IPAddress == "172.17.0.3"
+
+
+      - name: change nginx conf
+        ansible.builtin.copy:
+          src: /tmp/django/default2
+          dest: /etc/nginx/sites-available/default
+          remote_src: yes
+        when: result2.exists and result2.container.NetworkSettings.IPAddress == "172.17.0.3"
+
+      - name: Restart service nginx
+        ansible.builtin.service:
+          name: nginx
+          state: restarted
+        when: result2.exists and result2.container.NetworkSettings.IPAddress == "172.17.0.3"
+
+
+      - name: Delete 2st container
+        community.docker.docker_container:
+          name: "2st"
+          state: absent
+      - meta: end_play
+        when: result2.exists and result2.container.NetworkSettings.IPAddress == "172.17.0.3"

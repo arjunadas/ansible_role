@@ -1,6 +1,5 @@
 - hosts: all
-  vars:
-    docker_network: mynet109
+  become: yes
   tasks:
     - name: Main block
       block:
@@ -43,50 +42,3 @@
             - nginx
           tags:
             - install
-
-        - name: set +x script
-          file: 
-            path: /tmp/django/script.sh
-            mode: 0755
-          tags: 
-            - change_permissions            
-
-        - name: Run script = create Dockerfile # это единственный шелл, он нужен для создания web странички
-          shell: /bin/bash /tmp/django/script.sh
-          tags: 
-            - run_script   
-
-        - name: Create a network 
-          community.docker.docker_network:
-            name: mynet109
-            ipam_config:
-              - subnet: 172.109.0.0/16         
-          tags:
-            - create_net
-            
-        - name: Create 1st container
-          community.docker.docker_container:
-            name: 1st
-            image: "myproject2"
-            networks:
-              - name: "mynet109"
-                ipv4_address: "172.109.0.2"
-          tags:
-           - create_1st    
-
-        - name: "get network info"
-          docker_network_info:
-            name: "{{ docker_network }}"
-          register: net_info
-
-        - name: "get container info"
-          docker_container_info:
-            name: "{{ item  }}"
-          register: container_info
-          loop: "{{ net_info.network.Containers.keys() }}"
-
-        - debug:
-            msg: "{{ item }}"
-          loop: "{{ container_info.results|json_query('[].container.Name') }}" 
-      
-      become: yes

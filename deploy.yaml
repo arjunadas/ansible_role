@@ -27,7 +27,7 @@
           var: result1.container.NetworkSettings.IPAddress
         when: result1.exists and result1.container.NetworkSettings.IPAddress == "172.17.0.2"
 
-      - name: Create 2st container with ip = 172.17.0.2
+      - name: Create 2st container with ip = 172.17.0.3
         community.docker.docker_container:
           name: "2st"
           image: "permalexeyy/myproject5"

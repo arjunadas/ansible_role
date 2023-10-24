@@ -33,6 +33,20 @@
           image: "permalexeyy/myproject5"
         when: result1.exists and result1.container.NetworkSettings.IPAddress == "172.17.0.2"
 
+      - name: get 200
+        ansible.builtin.uri:
+          url: "http://172.17.0.3"
+          follow_redirects: none
+          method: GET
+        register: result200
+        when: result1.exists
+
+      - name: check
+        debug:
+          msg: "вижу код 200 сайта http://172.17.0.3"
+        when: result200.status == 200
+        when: result1.exists
+
       - name: change nginx conf
         ansible.builtin.copy:
           src: /tmp/django/default3
@@ -44,7 +58,7 @@
         ansible.builtin.service:
           name: nginx
           state: restarted
-        when: result1.exists and result1.container.NetworkSettings.IPAddress == "172.17.0.2"
+        when: result1.exists and result1.container.NetworkSettings.IPAddress == "172.17.0.2" and result200.status == 200
 
       - name: Delete 1st container
         community.docker.docker_container:
@@ -52,6 +66,7 @@
           state: absent
       - meta: end_play
         when: result1.exists and result1.container.NetworkSettings.IPAddress == "172.17.0.2"
+
 ################
 ################
       - name: Get info on 2nd container
@@ -74,6 +89,19 @@
           image: "permalexeyy/myproject5"
         when: result2.exists and result2.container.NetworkSettings.IPAddress == "172.17.0.3"
 
+      - name: get 200
+        ansible.builtin.uri:
+          url: "http://172.17.0.2"
+          follow_redirects: none
+          method: GET
+        register: result200
+        when: result2.exists
+
+      - name: check
+        debug:
+          msg: "вижу код 200 сайта http://172.17.0.2"
+        when: result200.status == 200
+        when: result2.exists
 
       - name: change nginx conf
         ansible.builtin.copy:
@@ -86,12 +114,11 @@
         ansible.builtin.service:
           name: nginx
           state: restarted
-        when: result2.exists and result2.container.NetworkSettings.IPAddress == "172.17.0.3"
-
+        when: result2.exists and result2.container.NetworkSettings.IPAddress == "172.17.0.3" and result200.status == 200
 
       - name: Delete 2st container
         community.docker.docker_container:
           name: "2st"
           state: absent
       - meta: end_play
-        when: result2.exists and result2.container.NetworkSettings.IPAddress == "172.17.0.3"
+        when: result2.exists and result2.container.NetworkSettings.IPAddress == "172.17.0.3"        

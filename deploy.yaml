@@ -52,7 +52,7 @@
           src: /tmp/django/default3
           dest: /etc/nginx/sites-available/default
           remote_src: yes
-        when: result1.exists and result1.container.NetworkSettings.IPAddress == "172.17.0.2"
+        when: result1.exists and result1.container.NetworkSettings.IPAddress == "172.17.0.2" and result200.status == 200
 
       - name: Restart service nginx
         ansible.builtin.service:
@@ -108,7 +108,7 @@
           src: /tmp/django/default2
           dest: /etc/nginx/sites-available/default
           remote_src: yes
-        when: result2.exists and result2.container.NetworkSettings.IPAddress == "172.17.0.3"
+        when: result2.exists and result2.container.NetworkSettings.IPAddress == "172.17.0.3" and result200.status == 200
 
       - name: Restart service nginx
         ansible.builtin.service:

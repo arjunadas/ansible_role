@@ -41,7 +41,7 @@
         register: result200
         when: result1.exists
 
-      - name: check
+      - name: check1
         debug:
           msg: "вижу код 200 сайта http://172.17.0.3"
         when: result200.status == 200
@@ -97,7 +97,7 @@
         register: result200
         when: result2.exists
 
-      - name: check
+      - name: check2
         debug:
           msg: "вижу код 200 сайта http://172.17.0.2"
         when: result200.status == 200

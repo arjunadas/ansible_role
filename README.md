@@ -13,6 +13,6 @@ cd ansible_role
 
 ansible-galaxy collection install community.general # для отправки уведомлений в Телеграм
 
-ansible-playbook deploy.yaml --extra-vars "ansible_sudo_pass= ************************** " --extra-vars "ansible_ssh_pass= ************************** "
+ansible-playbook deploy.yaml --extra-vars "ansible_sudo_pass=pass" --extra-vars "ansible_ssh_pass=pass"
 
 curl -o /dev/null -s -w "%{http_code}\n" http://185.98.82.78

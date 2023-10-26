@@ -44,8 +44,8 @@
       - name: check
         debug:
           msg: "вижу код 200 сайта http://172.17.0.3"
-        when: result203.status == 200
-        when: result1.exists
+        when: result1.exists and result203.status == 200
+        
 
       - name: change nginx conf
         ansible.builtin.copy:
@@ -100,8 +100,8 @@
       - name: check
         debug:
           msg: "вижу код 200 сайта http://172.17.0.2"
-        when: result202.status == 200
-        when: result2.exists
+        when: result2.exists and result202.status == 200
+        
 
       - name: change nginx conf
         ansible.builtin.copy:

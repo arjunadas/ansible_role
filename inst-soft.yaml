@@ -32,3 +32,13 @@
             - nginx
           tags:
             - install
+        
+        - name: Send notify to Telegram
+          community.general.telegram:
+            token: '6060689992:AAGyUYLdmgNYzMghB26akxVlIqk63D9VHb4'
+            api_args:
+              chat_id: 895408601
+              parse_mode: "markdown"
+              text: "Your precious application has been deployed: http://{{hostname}}/"
+              disable_web_page_preview: true
+              disable_notification: true                 

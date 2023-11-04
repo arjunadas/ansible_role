@@ -6,6 +6,8 @@ deploy.yaml - поднимает докер контейнер рядом с с�
 
 
 для запуска:
+apt install ansible -y
+apt install sshpass -y
 
 git clone https://github.com/arjunadas/ansible_role.git
 

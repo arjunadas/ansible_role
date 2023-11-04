@@ -5,14 +5,14 @@
       block:            
         - name: Add an Apt signing key, uses whichever key is at the URL
           apt_key:
-            url: https://download.docker.com/linux/ubuntu/gpg
+            url: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
             state: present
           tags:
             - apt_key
 
         - name: Add Repo
           apt_repository:
-            repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release | lower}} stable"
+            repo: "deb [arch={{ ansible_architecture }}] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
             state: present
             update_cache: yes
           tags:

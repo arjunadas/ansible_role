@@ -23,6 +23,7 @@
             name: "{{ item }}"
             state: present
           loop:
+            - gnupg
             - curl
             - apt-transport-https
             - ca-certificates

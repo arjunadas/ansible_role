@@ -1,5 +1,5 @@
 [servers]
-185.98.82.78                # set the ip address for the target server
+192.168.0.14                # set the ip address for the target server
 
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3
@@ -7,4 +7,4 @@ ansible_connection=ssh
 ansible_user=user            # set up your credentials
 ansible_ssh_pass=password    # set up your credentials
 ansible_sudo_pass=password   # set up your credentials
-
+hostname="192.168.0.14"

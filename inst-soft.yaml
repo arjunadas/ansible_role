@@ -3,11 +3,12 @@
   tasks:
     - name: Main block
       block:
+
         - name: Install gpg
           apt:
             name: gnupg
             state: present
-      
+
         - name: Add an Apt signing key, uses whichever key is at the URL
           apt_key:
             url: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
@@ -23,7 +24,7 @@
           tags:
             - add_repo
 
-        - name: Install soft #install soft
+        - name: Install soft
           apt:
             name: "{{ item }}"
             state: present
@@ -32,12 +33,14 @@
             - apt-transport-https
             - ca-certificates
             - software-properties-common
-            - docker-ce
+            - docker
+            - docker.io
+# так для Ubuntu - docker-ce
             - python3-docker
             - nginx
           tags:
             - install
-        
+
         - name: Send notify to Telegram
           community.general.telegram:
             token: '6060689992:AAGyUYLdmgNYzMghB26akxVlIqk63D9VHb4'
@@ -46,6 +49,6 @@
               parse_mode: "markdown"
               text: "Your precious application has been deployed: http://{{hostname}}/"
               disable_web_page_preview: true
-              disable_notification: true      
+              disable_notification: true
           tags:
-            - send_notify              
+            - send_notify
